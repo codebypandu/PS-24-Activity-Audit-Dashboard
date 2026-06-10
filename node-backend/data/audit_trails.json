@@ -1,0 +1,26 @@
+[
+  {
+    "id": "node-audit-001",
+    "activityLogId": "node-log-001",
+    "actorEmail": "node.service@audit.local",
+    "eventName": "NODE_SERVICE_READY",
+    "previousState": null,
+    "newState": "READY",
+    "changes": {
+      "service": "node-backend"
+    },
+    "createdAt": "2026-06-08T10:30:00.000Z"
+  },
+  {
+    "id": "node-audit-002",
+    "activityLogId": "node-log-002",
+    "actorEmail": "admin@audit.local",
+    "eventName": "NODE_LOG_CREATED",
+    "previousState": null,
+    "newState": "CREATED",
+    "changes": {
+      "operation": "CREATE"
+    },
+    "createdAt": "2026-06-08T10:35:00.000Z"
+  }
+]

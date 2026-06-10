@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuditLens | Activity Log Portal</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <section class="auth-card">
+      <div class="brand-block">
+        <span class="eyebrow visible">PS-24</span>
+        <h1>Activity Log and Audit Trail Dashboard</h1>
+        <p class="muted">Securely log, filter, audit, and search user/system activity.</p>
+      </div>
+
+      <div class="demo-strip visible-grid">
+        <div class="demo-card visible">
+          <span class="demo-label visible">Admin Demo</span>
+          <strong>admin@audit.local</strong>
+          <button class="ghost-button demo-button visible" type="button" data-demo="admin" data-email="admin@audit.local" data-password="Admin@123">Use Demo</button>
+        </div>
+        <div class="demo-card visible">
+          <span class="demo-label visible">Analyst Demo</span>
+          <strong>analyst@audit.local</strong>
+          <button class="ghost-button demo-button visible" type="button" data-demo="analyst" data-email="analyst@audit.local" data-password="Analyst@123">Use Demo</button>
+        </div>
+      </div>
+
+      <div class="role-selector">
+        <button class="role-button active" data-role="analyst" type="button">
+          <span>Analyst</span>
+        </button>
+        <button class="role-button" data-role="admin" type="button">
+          <span>Admin</span>
+        </button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-button active" data-target="login-form">Login</button>
+        <button class="tab-button" data-target="register-form">Register</button>
+      </div>
+
+      <form id="login-form" class="form-panel active">
+        <h2>Welcome back</h2>
+        <p class="muted">Sign in to continue monitoring activity.</p>
+        <label>
+          <span>Email</span>
+          <input type="email" id="login-email" placeholder="analyst@audit.local" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" id="login-password" placeholder="Enter password" required />
+        </label>
+        <button type="submit" class="primary-button">Login</button>
+        <p id="login-message" class="status-text"></p>
+      </form>
+
+      <form id="register-form" class="form-panel">
+        <h2>Create analyst account</h2>
+        <p class="muted">New accounts can create and inspect their own activity records.</p>
+        <label>
+          <span>Full Name</span>
+          <input type="text" id="register-name" placeholder="Asha Menon" required />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" id="register-email" placeholder="asha@audit.local" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" id="register-password" placeholder="Create strong password" required />
+        </label>
+        <button type="submit" class="primary-button">Register</button>
+        <p id="register-message" class="status-text"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuditLens | Dashboard</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body class="dashboard-page">
+  <div class="dashboard-shell">
+    <aside class="sidebar">
+      <div>
+        <span class="eyebrow visible">AuditLens</span>
+        <h1>Activity Monitor</h1>
+      </div>
+      <nav class="side-nav">
+        <button class="nav-item active" data-view="overview">Overview</button>
+        <button class="nav-item" data-view="capture">Log Activity</button>
+        <button class="nav-item" data-view="logs">Activity Logs</button>
+        <button class="nav-item" data-view="audit">Audit Trails</button>
+        <button class="nav-item" data-view="search">Smart Search</button>
+        <button class="nav-item" data-view="node">Node CRUD</button>
+      </nav>
+      <button id="logout-button" class="ghost-button">Logout</button>
+    </aside>
+
+    <main class="content">
+      <section class="topbar">
+        <div>
+          <p class="muted small">Logged in as</p>
+          <h2 id="welcome-name">Analyst</h2>
+          <p class="muted" id="role-description">Track user and system activity across the platform.</p>
+        </div>
+        <div class="badge" id="role-badge">USER</div>
+      </section>
+
+      <section id="overview" class="view-panel active">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Total Logs</span>
+            <strong id="total-logs">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>High Risk</span>
+            <strong id="high-risk">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Audit Events</span>
+            <strong id="audit-count">0</strong>
+          </article>
+        </div>
+
+        <section class="glass-card">
+          <div class="section-heading">
+            <div>
+              <h3>Activity Summary</h3>
+              <p class="muted">Aggregated activity counts for quick monitoring.</p>
+            </div>
+            <button class="primary-button small-button" id="refresh-summary">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Actor</th>
+                  <th>Action</th>
+                  <th>Severity</th>
+                  <th>Source</th>
+                  <th>Events</th>
+                  <th>Last Seen</th>
+                </tr>
+              </thead>
+              <tbody id="summary-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="capture" class="view-panel">
+        <div class="glass-card">
+          <div class="section-heading">
+            <div>
+              <h3>Record Activity</h3>
+              <p class="muted">Capture user or system events with the details needed for review.</p>
+            </div>
+          </div>
+          <form id="log-form">
+            <div class="form-grid">
+              <label>
+                <span>Action</span>
+                <input type="text" id="action" placeholder="LOGIN_FAILED" required />
+              </label>
+              <label>
+                <span>Actor Type</span>
+                <select id="actorType" required>
+                  <option>USER</option>
+                  <option>SYSTEM</option>
+                </select>
+              </label>
+              <label>
+                <span>Severity</span>
+                <select id="severity" required>
+                  <option>LOW</option>
+                  <option>MEDIUM</option>
+                  <option>HIGH</option>
+                  <option>CRITICAL</option>
+                </select>
+              </label>
+              <label>
+                <span>Source</span>
+                <input type="text" id="source" placeholder="auth-service" required />
+              </label>
+              <label>
+                <span>IP Address</span>
+                <input type="text" id="ipAddress" placeholder="192.168.1.20" />
+              </label>
+              <label>
+                <span>State Change</span>
+                <input type="text" id="newState" placeholder="FAILED_AUTH" />
+              </label>
+              <label class="full-span">
+                <span>Message</span>
+                <textarea id="message" rows="4" placeholder="Unauthorized access attempt blocked after invalid password attempts." required></textarea>
+              </label>
+            </div>
+            <button class="primary-button" type="submit">Save Activity Log</button>
+            <p id="log-message" class="status-text"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="logs" class="view-panel">
+        <div class="glass-card">
+          <div class="section-heading">
+            <div>
+              <h3>Activity Logs</h3>
+              <p class="muted">Filter events by action, severity, and date range.</p>
+            </div>
+            <button id="refresh-logs" class="ghost-button small-button">Refresh</button>
+          </div>
+          <div class="filter-row">
+            <input id="filter-action" type="text" placeholder="Action" />
+            <select id="filter-severity">
+              <option value="">Any severity</option>
+              <option>LOW</option>
+              <option>MEDIUM</option>
+              <option>HIGH</option>
+              <option>CRITICAL</option>
+            </select>
+            <input id="filter-from" type="datetime-local" />
+            <input id="filter-to" type="datetime-local" />
+            <button id="apply-filters" class="primary-button small-button">Apply</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Actor</th>
+                  <th>Action</th>
+                  <th>Severity</th>
+                  <th>Source</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody id="logs-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="audit" class="view-panel">
+        <div class="glass-card">
+          <div class="section-heading">
+            <div>
+              <h3>Audit Trails</h3>
+              <p class="muted">Trace change records linked to captured activity.</p>
+            </div>
+            <button id="refresh-audit" class="ghost-button small-button">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Actor</th>
+                  <th>Event</th>
+                  <th>Previous</th>
+                  <th>New</th>
+                  <th>Log ID</th>
+                </tr>
+              </thead>
+              <tbody id="audit-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="search" class="view-panel">
+        <div class="glass-card">
+          <div class="section-heading">
+            <div>
+              <h3>Intelligent Search</h3>
+              <p class="muted">Try natural queries like unauthorized access or recent configuration changes.</p>
+            </div>
+          </div>
+          <div class="search-row">
+            <input id="semantic-query" type="text" value="Unauthorized access attempts" />
+            <button id="run-search" class="primary-button small-button">Search</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Score</th>
+                  <th>Time</th>
+                  <th>Action</th>
+                  <th>Severity</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody id="search-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="node" class="view-panel">
+        <div class="glass-card">
+          <div class="section-heading">
+            <div>
+              <h3>Node.js CRUD API</h3>
+              <p class="muted">Create and view records served by the Node.js backend through the FastAPI gateway.</p>
+            </div>
+            <button id="refresh-node" class="ghost-button small-button">Refresh</button>
+          </div>
+          <form id="node-log-form">
+            <div class="form-grid">
+              <label>
+                <span>Action</span>
+                <input type="text" id="node-action" value="NODE_CRUD_CREATE" required />
+              </label>
+              <label>
+                <span>Severity</span>
+                <select id="node-severity" required>
+                  <option>LOW</option>
+                  <option selected>MEDIUM</option>
+                  <option>HIGH</option>
+                  <option>CRITICAL</option>
+                </select>
+              </label>
+              <label>
+                <span>Actor Email</span>
+                <input type="email" id="node-actor-email" value="admin@audit.local" required />
+              </label>
+              <label>
+                <span>Source</span>
+                <input type="text" id="node-source" value="node-backend" required />
+              </label>
+              <label class="full-span">
+                <span>Message</span>
+                <textarea id="node-message" rows="3" required>Node.js backend CRUD operation recorded from dashboard.</textarea>
+              </label>
+            </div>
+            <button class="primary-button" type="submit">Create Node Log</button>
+            <p id="node-message-status" class="status-text"></p>
+          </form>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Actor</th>
+                  <th>Action</th>
+                  <th>Severity</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody id="node-logs-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

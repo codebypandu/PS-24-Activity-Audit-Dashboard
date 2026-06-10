@@ -1,0 +1,10 @@
+{
+  "name": "activity-audit-node-backend",
+  "version": "1.0.0",
+  "description": "Node.js CRUD API service for PS-24 Activity Log and Audit Trail Dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}

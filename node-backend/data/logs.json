@@ -1,0 +1,30 @@
+[
+  {
+    "id": "node-log-001",
+    "actorEmail": "node.service@audit.local",
+    "actorType": "SYSTEM",
+    "action": "NODE_HEALTH_CHECK",
+    "severity": "LOW",
+    "source": "node-backend",
+    "message": "Node.js backend service started and accepted API traffic.",
+    "ipAddress": "127.0.0.1",
+    "metadata": {
+      "rubric": "Review 3 Node.js Backend"
+    },
+    "occurredAt": "2026-06-08T10:30:00.000Z"
+  },
+  {
+    "id": "node-log-002",
+    "actorEmail": "admin@audit.local",
+    "actorType": "USER",
+    "action": "NODE_CRUD_CREATE",
+    "severity": "MEDIUM",
+    "source": "node-backend",
+    "message": "Admin created a sample Node.js activity record.",
+    "ipAddress": "192.168.1.15",
+    "metadata": {
+      "operation": "CREATE"
+    },
+    "occurredAt": "2026-06-08T10:35:00.000Z"
+  }
+]
