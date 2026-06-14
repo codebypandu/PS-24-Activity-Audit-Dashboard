@@ -36,6 +36,7 @@ document.getElementById("apply-filters").addEventListener("click", loadLogs);
 document.getElementById("refresh-audit").addEventListener("click", loadAuditTrails);
 document.getElementById("run-search").addEventListener("click", runSearch);
 document.getElementById("refresh-node").addEventListener("click", loadNodeLogs);
+nodeLogsBody.addEventListener("click", handleNodeLogAction);
 
 function openView(viewId) {
   viewButtons.forEach((item) => item.classList.remove("active"));
@@ -199,7 +200,7 @@ async function runSearch() {
 }
 
 async function loadNodeLogs() {
-  nodeLogsBody.innerHTML = `<tr><td colspan="5">Loading Node.js logs...</td></tr>`;
+  nodeLogsBody.innerHTML = `<tr><td colspan="6">Loading Node.js logs...</td></tr>`;
   try {
     const items = await nodeApiRequest("/logs");
     nodeLogsBody.innerHTML = items.length
@@ -210,11 +211,70 @@ async function loadNodeLogs() {
             <td>${escapeHtml(item.action)}</td>
             <td><span class="severity ${item.severity}">${item.severity}</span></td>
             <td>${escapeHtml(item.message)}</td>
+            <td>
+              <button class="ghost-button small-button node-edit" data-id="${escapeHtml(item.id)}">Edit</button>
+              <button class="ghost-button small-button node-delete" data-id="${escapeHtml(item.id)}">Delete</button>
+            </td>
           </tr>
         `).join("")
-      : `<tr><td colspan="5">No Node.js records yet.</td></tr>`;
+      : `<tr><td colspan="6">No Node.js records yet. Create one using the form above.</td></tr>`;
   } catch (error) {
-    nodeLogsBody.innerHTML = `<tr><td colspan="5">${escapeHtml(error.message)}</td></tr>`;
+    nodeLogsBody.innerHTML = `<tr><td colspan="6">${escapeHtml(error.message)}</td></tr>`;
+  }
+}
+
+async function handleNodeLogAction(event) {
+  const editButton = event.target.closest(".node-edit");
+  const deleteButton = event.target.closest(".node-delete");
+  const id = editButton?.dataset.id || deleteButton?.dataset.id;
+
+  if (!id) {
+    return;
+  }
+
+  const status = document.getElementById("node-message-status");
+
+  try {
+    if (editButton) {
+      const current = await nodeApiRequest(`/logs/${encodeURIComponent(id)}`);
+      const action = prompt("Update action", current.action || "");
+      if (action === null) {
+        return;
+      }
+      const message = prompt("Update message", current.message || "");
+      if (message === null) {
+        return;
+      }
+
+      await nodeApiRequest(`/logs/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          ...current,
+          action,
+          message
+        })
+      });
+      status.textContent = "Node.js log updated.";
+      status.className = "status-text status-success";
+    }
+
+    if (deleteButton) {
+      const confirmed = confirm("Delete this Node.js log?");
+      if (!confirmed) {
+        return;
+      }
+
+      await nodeApiRequest(`/logs/${encodeURIComponent(id)}`, {
+        method: "DELETE"
+      });
+      status.textContent = "Node.js log deleted.";
+      status.className = "status-text status-success";
+    }
+
+    await loadNodeLogs();
+  } catch (error) {
+    status.textContent = error.message;
+    status.className = "status-text status-error";
   }
 }
 

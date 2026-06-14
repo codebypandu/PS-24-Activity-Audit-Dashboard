@@ -1,5 +1,29 @@
 [
   {
+    "id": "node-audit-1781425983354",
+    "activityLogId": "node-log-1781425955228",
+    "actorEmail": "admin@audit.local",
+    "eventName": "NODE_LOG_DELETED",
+    "previousState": "ACTIVE",
+    "newState": "DELETED",
+    "changes": {
+      "action": "NODE_CRUD_CREATE"
+    },
+    "createdAt": "2026-06-14T08:33:03.354Z"
+  },
+  {
+    "id": "node-audit-1781425955236",
+    "activityLogId": "node-log-1781425955228",
+    "actorEmail": "admin@audit.local",
+    "eventName": "NODE_LOG_CREATED",
+    "previousState": null,
+    "newState": "CREATED",
+    "changes": {
+      "action": "NODE_CRUD_CREATE"
+    },
+    "createdAt": "2026-06-14T08:32:35.236Z"
+  },
+  {
     "id": "node-audit-001",
     "activityLogId": "node-log-001",
     "actorEmail": "node.service@audit.local",
